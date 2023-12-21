@@ -1,0 +1,24 @@
+version: '1'
+
+services:
+  sonarscanner:
+    image: sonarsource/sonar-scanner-cli
+    environment:
+      - SONAR_TOKEN=${SONAR_TOKEN}
+    command: >
+      bash -c "sonar-scanner
+      -Dsonar.projectKey=sonarqube
+      -Dsonar.projectName=sonarqube
+      -Dsonar.sources=.
+      -Dsonar.language=js
+      -Dsonar.host.url=http://sonarqube:9000
+      -Dsonar.token=${SONAR_TOKEN}"
+      -Dsonar.exclusions=node_modules/**/*
+    volumes:
+      - ./:/usr/src
+    networks:
+      - sonar-network
+
+networks:
+  sonar-network:
+    external: true
