@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS maTable (
+  id SERIAL PRIMARY KEY,
+  valeur NUMERIC
+);

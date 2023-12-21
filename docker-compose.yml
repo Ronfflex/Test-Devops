@@ -1,0 +1,24 @@
+version: "1"
+services:
+  frontend:
+    build: ./frontend-microservice
+    ports:
+      - "8080:80"
+
+  backend:
+    build: ./backend-microservice
+    ports:
+      - "3000:3000"
+    depends_on:
+      - database
+
+  database:
+    image: postgres
+    environment:
+      POSTGRES_USER: monUtilisateur
+      POSTGRES_PASSWORD: monMotDePasse
+      POSTGRES_DB: maBaseDeDonnees
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql

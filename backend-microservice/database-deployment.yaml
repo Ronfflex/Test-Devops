@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: database-deployment
+  labels:
+    app: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: database
+  template:
+    metadata:
+      labels:
+        app: database
+    spec:
+      containers:
+      - name: database
+        image: postgres:latest
+        env:
+        - name: POSTGRES_DB
+          value: "maBaseDeDonnees"
+        - name: POSTGRES_USER
+          value: "monUtilisateur"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: password
+        ports:
+        - containerPort: 5432
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
+env:
+  - name: POSTGRES_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: db-secret
+        key: password
+
